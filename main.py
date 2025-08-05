@@ -15,7 +15,7 @@ class WeatherForecast:
                  afternoon_forecast, 
                  night_forecast, 
                  summary_forecast, 
-                 summary_when, 
+                 summary_when,      
                  min_temp, 
                  max_temp):
         
@@ -174,8 +174,11 @@ class WeatherForecastApp:
         if len(forecasts) !=0:
             print(f"Weather Forecasts for {location_name} for the Following Week:")
             for forecast in forecasts:
+                str_rep =str(forecast)
                 print("-" * 50)
-                print(forecast)
+                
+                #avoid redundancy of repeating the name of location
+                print(str_rep[str_rep.find("Date"): ])
             print("-" * 50)
         else:
             print(f"\'{location_name}\' is not a valid location name")
@@ -190,8 +193,12 @@ class WeatherForecastApp:
         if len(forecasts) !=0:
             print(f"Weather Forecasts for {date} in Malaysia:")
             for forecast in forecasts:
+                str_rep =str(forecast)
                 print("-" * 50)
-                print(forecast)
+
+                #avoid redundancy of repeating the date
+                print(str_rep[str_rep.find("Location") : str_rep.find("Date")] +
+                      str_rep[str_rep.find("Morning") : ])
             print("-" * 50)
         else:
             print(f"\'{date}\' is not a valid date")
@@ -208,8 +215,12 @@ class WeatherForecastApp:
         if len(forecasts) !=0:
             print(f"Weather Forecast for {date} in {location_name}, Malaysia:")
             for forecast in forecasts:
+                str_rep =str(forecast)
                 print("-" * 50)
-                print(forecast)
+
+                #avoid redundancy of repeating the date and name of location
+                print(str_rep[str_rep.find("Location ID"): str_rep.find("Location Name")] + "...\n" +
+                      str_rep[str_rep.find("Morning"): ])  
             print("-" * 50)
         else:
             print(f"invalid input")
