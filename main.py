@@ -130,6 +130,11 @@ class WeatherForecastDatabase:
     def get_forecast_by_date(self, date:str):
         return list(filter(lambda x: x.date ==date, self._weather_forecasts))
     
+    def get_forecast_by_date_and_location(self, date:str, location_name:str):
+        return list(filter(lambda x: x.date ==date and 
+                                    x.location_name ==location_name, 
+                           self._weather_forecasts))
+    
     def get_all_location_names(self):
         return sorted(list(set((map(lambda x: x.location_name, self._weather_forecasts)))))
     
@@ -148,7 +153,8 @@ class WeatherForecastApp:
             "*********\n"
             "0. quit\n"
             "1. list weather forecasts by location\n"
-            "2. list weather forecasts by date"
+            "2. list weather forecasts by date\n"
+            "3. list weather forecasts by date and location"
         )
 
     def list_all_location_names(self):
@@ -190,6 +196,24 @@ class WeatherForecastApp:
         else:
             print(f"\'{date}\' is not a valid date")
 
+    def print_forecast_by_date_and_location(self):
+        self.list_all_location_names() 
+        location_name =input("\nlocation: ")
+
+        print(f"\nenter a date from {TODAY.strftime("%Y-%m-%d")} to {IN_SIX_DAYS.strftime("%Y-%m-%d")}:  ")
+        date =input("\ndate: ")
+
+        forecasts =self.weather_db.get_forecast_by_date_and_location(date, location_name)
+        print()
+        if len(forecasts) !=0:
+            print(f"Weather Forecast for {date} in {location_name}, Malaysia:")
+            for forecast in forecasts:
+                print("-" * 50)
+                print(forecast)
+            print("-" * 50)
+        else:
+            print(f"invalid input")
+
     def execute(self):
         while True:
             self.help()
@@ -205,19 +229,20 @@ class WeatherForecastApp:
             elif command ==2:
                 self.print_forecast_by_date()
 
+            elif command ==3:
+                self.print_forecast_by_date_and_location()
+
             else:
                 print("\ninvalid command")
                 continue
 
             print()
-            
         
 
 if __name__ =="__main__":
     address ="https://api.data.gov.my/weather/forecast/"
 
     weather_app =WeatherForecastApp(address)
-
     weather_app.execute()
 
 
